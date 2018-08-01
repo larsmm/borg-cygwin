@@ -2,7 +2,7 @@
 ; Billy Charlton <sfbilly@gmail.com>
 ; --------------------------
 
-!define VERSION "1.0.11"
+!define VERSION "1.1.6"
 !define VERSION_LONG "${VERSION}.0"
 
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\BorgBackupUnofficial"
@@ -24,7 +24,7 @@ Name "Borg Backup ${VERSION}"
 OutFile "Borg Backup Installer v${VERSION}.exe"
 
 ; The default installation directory
-InstallDir "C:\Program Files\Borg"
+InstallDir "$PROGRAMFILES64\Borg"
 
 ; Registry key to check for directory (so if you install again, it will
 ; overwrite the old one automatically)

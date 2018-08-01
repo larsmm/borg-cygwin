@@ -1,0 +1,1 @@
+build-cygwin.bat setup-x86.exe

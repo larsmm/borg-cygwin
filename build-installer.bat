@@ -1,70 +1,39 @@
-REM --- Change to use different CygWin platform and final install path
+@echo off
+setlocal
 
-set CYGSETUP=setup-x86_64.exe
-set TARGETPATH=.
+REM --- NSIS zip must be in folder!  Get NSIS from http://nsis.sourceforge.net/Download
 
-REM --- NSIS must be installed!  Get NSIS from http://nsis.sourceforge.net/Download
-
-set MAKENSIS=C:\Program Files (x86)\NSIS\makensis.exe
-set POWERSHELL=%windir%\System32\WindowsPowerShell\v1.0\powershell.exe
-
-REM --- Fetch Cygwin setup from internet using powershell
-
-"%POWERSHELL%" -Command "(New-Object Net.WebClient).DownloadFile('https://cygwin.com/setup-x86_64.exe', 'setup-x86_64.exe')"
-
-REM --- Install build version of CygWin in a subfolder
+REM --- NSIS version
+set NSISV=nsis-2.51
 
 set OURPATH=%cd%
-set CYGBUILD=%OURPATH%\CygWin
-set CYGMIRROR=http://mirrors.kernel.org/sourceware/cygwin/
-set BUILDPKGS=python3,python3-devel,python3-setuptools,binutils,gcc-g++,libopenssl,openssl-devel,git,make,openssh,liblz4-devel,liblz4_1
+set MAKENSIS="%OURPATH%\%NSISV%\makensis.exe"
 
-%CYGSETUP% -q -B -o -n -R %CYGBUILD% -L -D -s %CYGMIRROR% -P %BUILDPKGS%
+IF NOT EXIST "%OURPATH%\%NSISV%.zip" GOTO ERROR
 
-REM --- Build borgbackup
+IF NOT EXIST "%OURPATH%\%NSISV%" Call :UnZipFile "%OURPATH%" "%OURPATH%\%NSISV%.zip"
 
-cd %CYGBUILD%
-bin\bash --login -c 'easy_install-3.6 pip'
-bin\bash --login -c 'pip install borgbackup'
-cd %OURPATH%
+%MAKENSIS% nsis-installer.nsi
 
-REM --- Install release version of CygWin in a subfolder
+exit /b
 
-set CYGPATH=%OURPATH%\Borg-installer
-set INSTALLPKGS=python3,openssh,liblz4_1,python3-setuptools
-set REMOVEPKGS=csih,gawk,lynx,man-db,groff,vim-minimal,tzcode,ncurses,info,util-linux
+:UnZipFile <ExtractTo> <newzipfile>
+set vbs="%temp%\_.vbs"
+if exist %vbs% del /f /q %vbs%
+>%vbs%  echo Set fso = CreateObject("Scripting.FileSystemObject")
+>>%vbs% echo If NOT fso.FolderExists(%1) Then
+>>%vbs% echo fso.CreateFolder(%1)
+>>%vbs% echo End If
+>>%vbs% echo set objShell = CreateObject("Shell.Application")
+>>%vbs% echo set FilesInZip=objShell.NameSpace(%2).items
+>>%vbs% echo objShell.NameSpace(%1).CopyHere(FilesInZip)
+>>%vbs% echo Set fso = Nothing
+>>%vbs% echo Set objShell = Nothing
+cscript //nologo %vbs%
+if exist %vbs% del /f /q %vbs%
+exit /b
 
-%CYGSETUP% -q -B -o -n -L -R %CYGPATH% -P %INSTALLPKGS% -x %REMOVEPKGS%
-
-REM --- Adjust final CygWin environment
-
-echo @"%TARGETPATH%\bin\bash" --login -c "cd $(cygpath '%cd%'); /bin/borg %%*" >%CYGPATH%\borg.bat
-copy nsswitch.conf %CYGPATH%\etc\
-copy fstab %CYGPATH%\etc\
-
-REM --- Copy built packages into release path
-
-cd %CYGBUILD%
-
-copy bin\borg %CYGPATH%\bin
-for /d %%d in (lib\python3.6\site-packages\borg*) do xcopy /s %%d %CYGPATH%\%%d\
-for /d %%d in (lib\python3.6\site-packages\msgpack*) do xcopy /s %%d %CYGPATH%\%%d\
-for /d %%d in (lib\python3.6\site-packages\pkg_resources) do xcopy /s %%d %CYGPATH%\%%d\
-
-REM --- Remove all locales except EN (borg does not use them)
-
-del /s /q %CYGPATH%\usr\share\locale\
-for /d %%d in (usr\share\locale\en*) do xcopy /s %%d %CYGPATH%\%%d\
-
-REM --- Remove all documentation
-
-del /s /q %CYGPATH%\usr\share\doc\
-del /s /q %CYGPATH%\usr\share\info\
-del /s /q %CYGPATH%\usr\share\man\
-
-REM --- Build Installer using NSIS
-
-cd %OURPATH%
-
-"%MAKENSIS%" nsis-installer.nsi
-
+:ERROR
+echo Error missing %NSISV%.zip in folder
+pause
+exit /b
