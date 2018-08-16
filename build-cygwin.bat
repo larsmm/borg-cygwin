@@ -81,17 +81,11 @@ del /s /q %CYGPATH%\*.h
 del /s /q %CYGPATH%\var\log
 del /s /q %CYGPATH%\var\cache
 
-REM --- Build Installer using NSIS
-
 cd %OURPATH%
 
-build-installer.bat
-
-GOTO END
+goto :EOF
 
 :ERROR
 echo Don't launch this script use build32.bat or build64.bat instead
 pause
-
-:END
-exit /b
+exit

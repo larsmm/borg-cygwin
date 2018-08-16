@@ -2,7 +2,7 @@
 ; Billy Charlton <sfbilly@gmail.com>
 ; --------------------------
 
-!define VERSION "1.1.6"
+;!define VERSION "1.1.7"
 !define VERSION_LONG "${VERSION}.0"
 
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\BorgBackupUnofficial"
@@ -11,8 +11,16 @@
 ; use "Modern" UI
 ;!define MUI_ICON "console.ico"
 !include "MUI2.nsh"
-!insertmacro MUI_LANGUAGE "English"
+
+;--------------------------------
+; Pages
 !define MUI_PAGE_HEADER_TEXT "Borg Backup"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_COMPONENTS
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
 
 !addincludedir "."
 !addplugindir "."
@@ -21,7 +29,7 @@
 Name "Borg Backup ${VERSION}"
 
 ; The file to write
-OutFile "Borg Backup Installer v${VERSION}.exe"
+OutFile "Borg Backup Installer v${VERSION}_${ARCH}.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES64\Borg"
@@ -36,16 +44,8 @@ RequestExecutionLevel admin
 VIProductVersion "${VERSION_LONG}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "BorgBackupUnofficial"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION_LONG}"
-
-;--------------------------------
-
-; Pages
-
-!insertmacro MUI_PAGE_DIRECTORY
-!insertmacro MUI_PAGE_COMPONENTS
-!insertmacro MUI_PAGE_INSTFILES
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_INSTFILES
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" ""
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Borg Backup Unofficial installer"
 
 
 ;--------------------------------

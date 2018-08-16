@@ -1,6 +1,7 @@
 Borg-installer
 CygWin
-nsis-2*
+nsis-*
+!nsis-installer.nsi
 http*
 ftp*
 *.exe
