@@ -75,6 +75,12 @@ del /s /q %CYGPATH%\lib\gcc
 del /s /q %CYGPATH%\lib\w32api
 del /s /q %CYGPATH%\usr\include\w32api
 
+REM --- Remove extra files
+
+del /s /q %CYGPATH%\*.h
+del /s /q %CYGPATH%\var\log
+del /s /q %CYGPATH%\var\cache
+
 REM --- Build Installer using NSIS
 
 cd %OURPATH%
