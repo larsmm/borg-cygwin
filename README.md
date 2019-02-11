@@ -2,7 +2,7 @@
 
 #### This creates a standard Windows installer for Borg Backup on Windows 7 and above.
 
-* The only prerequisite is the presence of NSIS zip, available at [https://sourceforge.net/projects/nsis/files/NSIS%203/3.03/nsis-3.03.zip/download](https://sourceforge.net/projects/nsis/files/NSIS%203/3.03/nsis-3.03.zip/download)
+* The only prerequisite is the presence of NSIS zip, available at [https://sourceforge.net/projects/nsis/files/NSIS%203/3.04/nsis-3.04.zip/download](https://sourceforge.net/projects/nsis/files/NSIS%203/3.04/nsis-3.04.zip/download)
 * About 1 GB free disk space required to build installer
 * Borg install itself will only require about 165 MB
 
