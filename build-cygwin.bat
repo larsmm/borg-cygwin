@@ -31,6 +31,7 @@ REM --- Build borgbackup
 
 cd %CYGBUILD%
 bin\bash --login -c 'easy_install-3.6 pip'
+bin\bash --login -c 'pip install -U pip'
 bin\bash --login -c 'pip install -U borgbackup'
 cd %OURPATH%
 
