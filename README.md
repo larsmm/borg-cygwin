@@ -18,11 +18,31 @@
 
 Create the installer by running build32.bat on 32bit Windows or build64.bat on 64bit Windows. After creating the installer, run it to install Borg.
 
-Then use borg like this, noting that all file paths are in Cygwin notation e.g. /c/path/to/my/files
+File paths are in Cygwin notation e.g. /c/path/to/my/files
+
+Exemple batch script to do backup:
 
 ```
-borg init /d/Borg
-borg create -C lz4 /d/Borg::Test /c/Photos/
+@echo off
+
+REM Mount smb backup folder to W:
+net use W: \\192.168.0.252\backup PASSWORD /USER:SOMEUSER /PERSISTENT:NO
+
+set BORG_PASSPHRASE=MYBORGPASSWORD
+
+REM ----------------------------------------
+REM Use only first time
+REM borg init --encryption=repokey-blake2 /w/Borg
+REM ----------------------------------------
+
+set T=%TIME: =0%
+set backdir=%date:~6,4%-%date:~3,2%-%date:~0,2%-%T:~0,2%%T:~3,2%%T:~6,2%
+
+call borg create --list -s -p -e '*/Thumbs.db' -e '*/Desktop.ini' -e '*/cache*' /w/Borg::%backdir% /c/Data /c/Users/me
+
+call borg prune --list --show-rc --keep-daily 7 --keep-weekly 4 --keep-monthly 6 /w/Borg
+
+net use W: /DELETE
 ```
 
 The install script first builds borg inside temporary CygWin subfolder, then installs a much smaller release version into the Borg-installer subfolder. Built packages are copied over, unnecessary files removed, and then NSIS is run.
