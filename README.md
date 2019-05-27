@@ -47,4 +47,4 @@ net use W: /DELETE
 
 The install script first builds borg inside temporary CygWin subfolder, then installs a much smaller release version into the Borg-installer subfolder. Built packages are copied over, unnecessary files removed, and then NSIS is run.
 
-Tested with CygWin 2.11.2, borgbackup 1.1.9 on Windows 7 & 10, 32-bit & 64-bit.
+Tested with CygWin 3.0.7, borgbackup 1.1.10 on Windows 7 & 10, 32-bit & 64-bit.

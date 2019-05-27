@@ -23,7 +23,7 @@ REM --- Install build version of CygWin in a subfolder
 set OURPATH=%cd%
 set CYGBUILD=%OURPATH%\CygWin
 set CYGMIRROR=http://mirrors.kernel.org/sourceware/cygwin/
-set BUILDPKGS=python3,python3-devel,python3-setuptools,binutils,gcc-g++,libopenssl,openssl-devel,git,make,openssh,liblz4-devel,liblz4_1,libzstd1,libzstd-devel
+set BUILDPKGS=python3,python3-devel,python3-setuptools,binutils,gcc-g++,libssl,libssl-devel,git,make,openssh,liblz4-devel,liblz4_1,libzstd1,libzstd-devel,libcrypt-devel
 
 %CYGSETUP% -q -B -o -n -g -R %CYGBUILD% -L -D -l %OURPATH% -s %CYGMIRROR% -P %BUILDPKGS%
 
@@ -39,7 +39,7 @@ REM --- Install release version of CygWin in a subfolder
 
 set CYGPATH=%OURPATH%\Borg-installer
 del /s /q %CYGPATH%
-set INSTALLPKGS=python3,openssh,liblz4_1,python3-setuptools,libzstd1,gcc-core
+set INSTALLPKGS=python3,openssh,python3-setuptools,liblz4_1,libzstd1,gcc-core,libssl,libcrypt2
 set REMOVEPKGS=csih,gawk,lynx,man-db,groff,vim-minimal,tzcode,ncurses,info,util-linux
 
 %CYGSETUP% -q -B -o -n -L -R %CYGPATH% -l %OURPATH% -P %INSTALLPKGS% -x %REMOVEPKGS%
