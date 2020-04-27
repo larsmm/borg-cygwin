@@ -49,11 +49,8 @@ Exemple batch script to do backup with ssh on a remote synology server:
 ```
 @echo off
 
-REM Mount smb backup folder to W:
-net use W: \\192.168.0.252\backup PASSWORD /USER:SOMEUSER /PERSISTENT:NO
-
 set BORG_PASSPHRASE=MYBORGPASSWORD
-set BORG_RSH="ssh -p SSHPORT -i /MYSSHKEYFILELOCATION"
+set BORG_RSH=ssh -p SSHPORT -i /MYSSHKEYFILELOCATION
 set BORG_REPO='SSHUSER@192.168.0.252:/volume1/backups/Borg'
 set BORG_REMOTE_PATH="/usr/local/bin/borg"
 
@@ -72,4 +69,4 @@ call borg prune --list --show-rc --keep-daily 7 --keep-weekly 4 --keep-monthly 6
 
 The install script first builds borg inside temporary CygWin subfolder, then installs a much smaller release version into the Borg-installer subfolder. Built packages are copied over, unnecessary files removed, and then NSIS is run.
 
-Tested with CygWin 3.0.7, borgbackup 1.1.10 on Windows 7 & 10, 32-bit & 64-bit.
+Tested with CygWin 3.0.7, borgbackup 1.1.11 on Windows 7 & 10, 32-bit & 64-bit.
