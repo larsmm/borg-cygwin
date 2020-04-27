@@ -39,7 +39,7 @@ REM --- Install release version of CygWin in a subfolder
 
 set CYGPATH=%OURPATH%\Borg-installer
 del /s /q %CYGPATH%
-set INSTALLPKGS=python3,openssh,python3-setuptools,liblz4_1,libzstd1,gcc-core,libssl,libcrypt2
+set INSTALLPKGS=python3,openssh,python3-setuptools,liblz4_1,libzstd1,libssl,libcrypt2
 set REMOVEPKGS=csih,gawk,lynx,man-db,groff,vim-minimal,tzcode,ncurses,info,util-linux
 
 %CYGSETUP% -q -B -o -n -L -R %CYGPATH% -l %OURPATH% -P %INSTALLPKGS% -x %REMOVEPKGS%
@@ -47,8 +47,8 @@ set REMOVEPKGS=csih,gawk,lynx,man-db,groff,vim-minimal,tzcode,ncurses,info,util-
 REM --- Adjust final CygWin environment
 
 echo @"%TARGETPATH%\bin\bash" --login -c "cd $(cygpath '%cd%'); /bin/borg %%*" >%CYGPATH%\borg.bat
-copy nsswitch.conf %CYGPATH%\etc\
-copy fstab %CYGPATH%\etc\
+copy /Y nsswitch.conf %CYGPATH%\etc\
+copy /Y fstab %CYGPATH%\etc\
 
 REM --- Copy built packages into release path
 
@@ -58,6 +58,7 @@ copy bin\borg %CYGPATH%\bin
 for /d %%d in (lib\python3.6\site-packages\borg*) do xcopy /s /y %%d %CYGPATH%\%%d\
 for /d %%d in (lib\python3.6\site-packages\msgpack*) do xcopy /s /y %%d %CYGPATH%\%%d\
 for /d %%d in (lib\python3.6\site-packages\pkg_resources) do xcopy /s /y %%d %CYGPATH%\%%d\
+copy lib\libc.a %CYGPATH%\lib
 
 REM --- Remove all locales except EN (borg does not use them)
 
@@ -75,12 +76,19 @@ REM --- Remove gcc libs (gcc is installed only for ldconfig support)
 del /s /q %CYGPATH%\lib\gcc
 del /s /q %CYGPATH%\lib\w32api
 del /s /q %CYGPATH%\usr\include\w32api
+del /s /q %CYGPATH%\lib\libbfd.a
+del /s /q %CYGPATH%\lib\libopcodes.a
+del /s /q %CYGPATH%\bin\objdump.exe
+del /s /q %CYGPATH%\bin\ld.exe
+del /s /q %CYGPATH%\bin\ld.bfd.exe
 
 REM --- Remove extra files
 
 del /s /q %CYGPATH%\*.h
 del /s /q %CYGPATH%\var\log
 del /s /q %CYGPATH%\var\cache
+del /s /q %CYGPATH%\usr\x86_64-pc-cygwin
+del /s /q %CYGPATH%\usr\i686-pc-cygwin
 
 cd %OURPATH%
 
