@@ -1,6 +1,7 @@
 ; Borg Backup Installer
 ; Billy Charlton <sfbilly@gmail.com>
 ; --------------------------
+Unicode True
 
 ;!define VERSION "1.1.7"
 !define VERSION_LONG "${VERSION}.0"
