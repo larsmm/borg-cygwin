@@ -18,6 +18,14 @@ IF NOT EXIST "%OURPATH%\%NSISV%.zip" GOTO ERROR
 
 IF NOT EXIST "%OURPATH%\%NSISV%" Call :UnZipFile "%OURPATH%" "%OURPATH%\%NSISV%.zip"
 
+
+REM --- Replace junction files with symlink; avoid File: failed opening file
+REM --- https://cygwin.com/cygwin-ug-net/using.html#pathnames-symlinks
+cd %CYGPATH%
+bin\bash --login -c 'export CYGWIN=winsymlinks; rm /dev/stdin /dev/stdout /dev/stderr /dev/fd /etc/hosts /etc/protocols /etc/services /etc/networks /etc/mtab; for i in /etc/postinstall/*.done; do $i; done'
+cd %OURPATH%
+
+
 REM --- Automatic Borg version check
 REM --- Can't use pipe directly in command, workaround with temp file
 cd %CYGPATH%
