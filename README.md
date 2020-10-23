@@ -69,4 +69,4 @@ call borg prune --list --show-rc --keep-daily 7 --keep-weekly 4 --keep-monthly 6
 
 The install script first builds borg inside temporary CygWin subfolder, then installs a much smaller release version into the Borg-installer subfolder. Built packages are copied over, unnecessary files removed, and then NSIS is run.
 
-Tested with CygWin 3.1.6, borgbackup 1.1.13 on Windows 7 & 10, 32-bit & 64-bit.
+Tested with CygWin 3.1.7, borgbackup 1.1.14 on Windows 7 & 10, 32-bit & 64-bit.
