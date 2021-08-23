@@ -5,10 +5,10 @@ REM --- Need cpu version at first parameter
 if "%~1"=="" GOTO CPUERROR
 
 REM --- NSIS zip must be in folder!  Get NSIS from http://nsis.sourceforge.net/Download
-REM https://sourceforge.net/projects/nsis/files/NSIS%203/3.05/nsis-3.05.zip/download
+REM https://sourceforge.net/projects/nsis/files/NSIS%203/3.07/nsis-3.07.zip/download
 
 REM --- NSIS version
-set NSISV=nsis-3.05
+set NSISV=nsis-3.07
 
 set OURPATH=%cd%
 set CYGPATH=%OURPATH%\Borg-installer
